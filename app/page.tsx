@@ -1,65 +1,96 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { motion } from "framer-motion";
+import { FileText, Cpu, Music, Network } from "lucide-react";
+import AudioPlayer from "./components/AudioPlayer";
+
+export default function MusicAI() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-black text-white font-sans selection:bg-white/30">
+      <nav className="fixed top-0 w-full z-50 border-b border-white/10 bg-black/50 backdrop-blur-md">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <span className="text-sm font-medium tracking-tight">Neural Music Gen</span>
+          <div className="flex gap-4">
+            <a href="https://github.com/Atahar-Shihab/cse425-project_music-generation-unsupervised" className="text-white/70 hover:text-white transition-colors">
+              <FileText className="w-5 h-5" />
+            </a>
+            <a href="#" className="text-white/70 hover:text-white transition-colors">
+              <FileText className="w-5 h-5" />
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <main className="pt-32 pb-24 px-6 max-w-6xl mx-auto">
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col items-center text-center space-y-8 mb-32"
+        >
+          <h1 className="text-5xl md:text-7xl font-semibold tracking-tighter bg-gradient-to-br from-white to-white/40 bg-clip-text text-transparent">
+            Unsupervised Neural Network <br />
+            Multi-Genre Music Generation
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="max-w-2xl text-lg text-white/60 font-light tracking-wide leading-relaxed">
+            An analysis of Bottleneck vs. Autoregressive Architectures using Long Short-Term Memory Autoencoders, Variational Autoencoders, and Transformers.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+        </motion.section>
+
+        <section className="max-w-3xl mx-auto mb-32">
+          <h2 className="text-2xl font-medium mb-8 text-center">Generated Samples</h2>
+          <div className="flex flex-col gap-4">
+            <AudioPlayer 
+              title="Autoregressive Sequence 01" 
+              model="Task 3: Transformer Decoder" 
+              src="/transformer_sample.mp3" 
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            <AudioPlayer 
+              title="C-Major Harmonics" 
+              model="Task 4: RLHF Tuned VAE" 
+              src="/rlhf_sample.mp3" 
+            />
+            <AudioPlayer 
+              title="Latent Space Interpolation" 
+              model="Task 2: Variational Autoencoder" 
+              src="/vae_sample.mp3" 
+            />
+          </div>
+        </section>
+
+        <section className="grid md:grid-cols-3 gap-6 mb-32">
+          <Card
+            icon={<Cpu />}
+            title="LSTM Autoencoder"
+            desc="Bidirectional encoding layers mapping 128-timestep sequences to lower-dimensional latent spaces."
+          />
+          <Card
+            icon={<Network />}
+            title="Variational Autoencoder"
+            desc="Probabilistic latent distributions utilizing the reparameterization trick for diverse generation."
+          />
+          <Card
+            icon={<Music />}
+            title="Transformer & RLHF"
+            desc="Autoregressive self-attention mechanisms fine-tuned via Policy Gradients for perfect C-Major harmony."
+          />
+        </section>
       </main>
     </div>
+  );
+}
+
+function Card({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
+  return (
+    <motion.div
+      whileHover={{ y: -5 }}
+      className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-white/20 transition-colors"
+    >
+      <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center mb-6 text-white">
+        {icon}
+      </div>
+      <h3 className="text-xl font-medium mb-3">{title}</h3>
+      <p className="text-white/50 leading-relaxed font-light">{desc}</p>
+    </motion.div>
   );
 }
